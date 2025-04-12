@@ -1,8 +1,8 @@
+import platform
 import csv
 import os
 import re
 from yt_dlp import YoutubeDL
-import platform
 
 def discover_os():
     """Gives program what OS is being ran"""
@@ -24,7 +24,6 @@ def file_location():
         user_input = input("What is the CSV file's name?\n(Please keep the file in Documents otherwise the script cannot find it. Don't add file extension)\n")
         user_input += '.csv'
         file_path = os.path.join(documents_directory, user_input)
-        print(file_path)
 
         if not os.path.exists(file_path):
             print(f'File {user_input} was not found in {documents_directory}.\nCheck name is in correct and file is in correct location and try again.')
@@ -40,7 +39,7 @@ def read_csv(file_path):
         for row in entries:
             for cell in row:
                 if youtube_link(cell.strip()):
-                    return cell.strip()
+                    run_yt_dlp(cell.strip())
 
 def run_yt_dlp(yt_link):
     """Runs the yt-dlp utility"""
@@ -60,6 +59,4 @@ def run_yt_dlp(yt_link):
 
 if __name__ == "__main__":
     csv_location = file_location()
-    
-    for link in read_csv(csv_location):
-        run_yt_dlp(link)
+    read_csv(csv_location)
