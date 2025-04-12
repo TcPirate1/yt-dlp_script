@@ -1,6 +1,12 @@
 import csv
 import os
 import re
+from yt_dlp import YoutubeDL
+import platform
+
+def discover_os():
+    """Gives program what OS is being ran"""
+    return platform.system()
 
 def youtube_link(entry):
     """Check if csv entry is a Youtube Link"""
@@ -34,13 +40,26 @@ def read_csv(file_path):
         for row in entries:
             for cell in row:
                 if youtube_link(cell.strip()):
-                    print(cell)
+                    return cell.strip()
 
+def run_yt_dlp(yt_link):
+    """Runs the yt-dlp utility"""
 
-def additional_args():
-    """Ask user whether they want to add additional arguments (for now only ask save location)"""
+    if discover_os() == 'Linux':
+        path = f'{os.path.expanduser('~')}/Videos/Music'
+    else:
+        path = f'{os.path.expanduser('~')}/Music'
+    
+    ydl_opts = {
+        'format': 'aac',
+        'outtmlp': path
+    }
+    with YoutubeDL(ydl_opts) as ydl:
+        ydl.download(yt_link)
 
 
 if __name__ == "__main__":
     csv_location = file_location()
-    read_csv(csv_location)
+    
+    for link in read_csv(csv_location):
+        run_yt_dlp(link)
