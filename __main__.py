@@ -34,11 +34,10 @@ def read_csv(file_path):
             entries = csv.reader(csvfile)
             for row in entries:
                 for cell in row:
-                    if youtube_link(cell):
-                        print(cell.strip())
+                    print(youtube_link(cell))
     except Exception as e:
         print(f'Error:\n{e}')
-        return []
+        # return []
 
 
 def additional_args():
