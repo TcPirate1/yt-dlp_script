@@ -4,7 +4,7 @@ import re
 
 def youtube_link(entry):
     """Check if csv entry is a Youtube Link"""
-    link_pattern = re.compile(r'(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|playlist\?|watch\?v=|watch\?.+(?:&|&#38;);v=))([a-zA-Z0-9\-_]{11})?(?:(?:\?|&|&#38;)index=((?:\d){1,3}))?(?:(?:\?|&|&#38;)?list=([a-zA-Z\-_0-9]{34}))?(?:\S+)?', re.IGNORECASE)
+    link_pattern = re.compile(r'^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$', re.IGNORECASE)
 
     return bool(link_pattern.match(entry))
 
@@ -29,15 +29,12 @@ def file_location():
 
 def read_csv(file_path):
     """Reads csv file"""
-    try:
-        with open(file_path, newline='', encoding='utf-8') as csvfile:
-            entries = csv.reader(csvfile)
-            for row in entries:
-                for cell in row:
-                    print(youtube_link(cell))
-    except Exception as e:
-        print(f'Error:\n{e}')
-        # return []
+    with open(file_path, newline='', encoding='utf-8') as csvfile:
+        entries = csv.reader(csvfile)
+        for row in entries:
+            for cell in row:
+                if youtube_link(cell.strip()):
+                    print(cell)
 
 
 def additional_args():
