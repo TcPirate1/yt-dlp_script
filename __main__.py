@@ -1,7 +1,5 @@
-import platform
 import csv
 import os
-import subprocess
 import re
 
 def youtube_link(entry):
