@@ -5,5 +5,10 @@ To be honest I have spent too much time copy and pasting URLs into this incredib
 # Development requirements
 - pip (for the YT-DLP package)
 
+# Useful YT-DLP arguments
+- `-x` extracts audio
+- `ytsearch`, `ytstories`: searches Youtube and stories
+- `-P` followed by directory entry will save the download in specified location
+
 # Post development (ideas)
 - Pyinstaller
