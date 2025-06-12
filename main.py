@@ -11,7 +11,7 @@ def file_location():
 
     while True:
         file_path_input = input("Where do you want to save the file?\n\n")
-        file_path = f'{os.path.join(home_directory, file_path)}'
+        file_path = f'{os.path.join(home_directory, file_path_input)}'
         
         confirmation = input(f'Are you sure you want to save in {file_path}? [Y]es, [N]o\n\n')
 
@@ -25,7 +25,7 @@ def audio_arguments():
     """Ask user for additional arguments"""
     arguments_input = input("Do you want specific audio format? [Y]es, [N]o\n\n")
 
-    if arguments_input.lower == 'y':
+    if arguments_input.lower() == 'y':
         options = input("What is the format?\n")
         return options
 
