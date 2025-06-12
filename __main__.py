@@ -1,56 +1,49 @@
-import platform
+
 import csv
 import os
-import re
 from yt_dlp import YoutubeDL
-
-def discover_os():
-    """Gives program what OS is being ran"""
-    return platform.system()
-
-def youtube_link(entry):
-    """Check if csv entry is a Youtube Link"""
-    link_pattern = re.compile(r'^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$', re.IGNORECASE)
-
-    return bool(link_pattern.match(entry))
+from utils import discover_os, check_youtube_link
 
 def file_location():
-    """Ask user for file location"""
+    """Ask user for information related to YT-DLP"""
     
     home_directory = os.path.expanduser('~')
-    documents_directory = os.path.join(home_directory, 'Documents')
 
     while True:
-        user_input = input("What is the CSV file's name?\n(Please keep the file in Documents otherwise the script cannot find it. Don't add file extension)\n")
-        user_input += '.csv'
-        file_path = os.path.join(documents_directory, user_input)
+        file_path_input = input("Where do you want to save the file?\n\n")
+        file_path = f'{os.path.join(home_directory, file_path)}'
+        
+        confirmation = input(f'Are you sure you want to save in {file_path}? [Y]es, [N]o\n\n')
 
-        if not os.path.exists(file_path):
-            print(f'File {user_input} was not found in {documents_directory}.\nCheck name is in correct and file is in correct location and try again.')
+        if confirmation.lower() == 'y':
+            return file_path
+        else:
+            print("Exiting...")
             continue
 
-        return file_path
+def audio_arguments():
+    """Ask user for additional arguments"""
+    arguments_input = input("Do you want specific audio format? [Y]es, [N]o\n\n")
 
+    if arguments_input.lower == 'y':
+        options = input("What is the format?\n")
+        return options
 
-def read_csv(file_path):
-    """Reads csv file"""
-    with open(file_path, newline='', encoding='utf-8') as csvfile:
-        entries = csv.reader(csvfile)
-        for row in entries:
-            for cell in row:
-                if youtube_link(cell.strip()):
-                    run_yt_dlp(cell.strip())
-
-def run_yt_dlp(yt_link):
+def run_yt_dlp():
     """Runs the yt-dlp utility"""
 
-    if discover_os() == 'Linux':
-        path = f'{os.path.expanduser('~')}/Videos/Music'
-    else:
-        path = f'{os.path.expanduser('~')}/Music'
+    yt_link = input("Enter the link:\n")
+    
+    if check_youtube_link(yt_link) == False:
+        print("It appears your link isn't a YT link. Please enter a valid link.")
+
+    path = file_location()
+
+    arguments = audio_arguments()
+
     
     ydl_opts = {
-        'format': 'aac',
+        'format': arguments,
         'outtmlp': path
     }
     with YoutubeDL(ydl_opts) as ydl:
@@ -58,5 +51,4 @@ def run_yt_dlp(yt_link):
 
 
 if __name__ == "__main__":
-    csv_location = file_location()
-    read_csv(csv_location)
+    run_yt_dlp()
