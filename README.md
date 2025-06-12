@@ -1,14 +1,12 @@
-# YT-DLP script to download songs from a CSV file
+# YT-DLP script to download songs
 
-To be honest I have spent too much time copy and pasting URLs into this incredibly useful utility and am ashamed I didn't think to write a script for this earlier.
+Doesn't seem to be able to do what I imagined so pivoting to making a command-line program.
 
 # Development requirements
-- pip (for the YT-DLP package)
+- yt-dlp
+- pipx (For packaging into command-line program)
 
 # Useful YT-DLP arguments
 - `-x` extracts audio
 - `ytsearch`, `ytstories`: searches Youtube and stories
 - `-P` followed by directory entry will save the download in specified location
-
-# Post development (ideas)
-- Pyinstaller
