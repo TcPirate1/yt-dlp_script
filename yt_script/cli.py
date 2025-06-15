@@ -1,27 +1,33 @@
 
 import os
-from argparse import ArgumentParser
+# from argparse import ArgumentParser
 from yt_dlp import YoutubeDL
+from yt_dlp.utils import read_batch_urls
 from yt_script.utils import check_youtube_link, yt_dlp_opts
+import csv
 
-parser = ArgumentParser(prog="YT-DLP script")
+# parser = ArgumentParser(prog="YT-DLP script")
 
 def file_location():
-    """Ask user for information related to YT-DLP"""
-    
-    home_directory = os.path.expanduser('~')
+    """Ask user for name of CSV file"""
 
     while True:
-        file_path_input = input("Where do you want to save the file?\n\n")
-        file_path = f'{os.path.join(home_directory, file_path_input)}'
+        file_name = input("What is the name of the CSV file? DO NOT add extension.\n\n")
         
-        confirmation = input(f'Are you sure you want to save in {file_path}? [Y]es, [N]o\n\n')
+        documents_directory = os.path.join(os.path.expanduser('~'), "Documents", file_name, ".csv")
 
-        if confirmation.lower() == 'y' and confirmation.lower() == 'n' and os.path.isdir(file_path) is True:
-            return file_path
-        
-        print("\nRe-enter file path, it is either invalid or you pressed [N]o:")
+        if not os.path.exists(documents_directory):
+            print(f'{file_name} was not found in {documents_directory}.\nCheck you did not make any typos and try again.')
 
+        return documents_directory
+
+def read_csv(documents):
+    with open(documents, newline='', encoding='utf-8') as csv:
+        entries = csv.reader(csvfile=csv)
+        for row in entries:
+            for cell in row:
+                if check_youtube_link(cell.strip()):
+                    print(f'Add {cell} to separate txt file. Then run batch url function.')
 
 def run_yt_dlp():
     """Runs the yt-dlp utility"""
@@ -40,8 +46,6 @@ def run_yt_dlp():
 
     with YoutubeDL(yt_dlp_opts(outtmpl)) as ydl:
         ydl.download(yt_link)
-
-    print("Would you like to download another song? [Y]es [N]o\n")
 
 
 if __name__ == "__main__":
