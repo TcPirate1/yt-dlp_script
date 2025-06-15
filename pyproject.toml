@@ -1,0 +1,12 @@
+[build-system]
+requires = ["python>=3.13","yt-dlp>=2025.3.31"]
+
+[project]
+name = "Lazy YT-DLP"
+version = "0.0.1"
+description = "I'm lazy so I made this"
+readme = "README.md"
+authors [{name = "TC", email: "terence89chen@gmail.com"}]
+
+[project.scripts]
+YT-DLP script = "yt_script.__main__:main"

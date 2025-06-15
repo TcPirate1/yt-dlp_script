@@ -1,7 +1,10 @@
 
 import os
+from argparse import ArgumentParser
 from yt_dlp import YoutubeDL
-from utils import check_youtube_link, yt_dlp_opts
+from yt_script.utils import check_youtube_link, yt_dlp_opts
+
+parser = ArgumentParser(prog="YT-DLP script")
 
 def file_location():
     """Ask user for information related to YT-DLP"""
